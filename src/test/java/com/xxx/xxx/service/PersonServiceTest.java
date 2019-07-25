@@ -7,17 +7,19 @@ import com.xxx.xxx.utils.TimeUnit;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
-import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.core.classloader.annotations.SuppressStaticInitializationFor;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 import java.math.BigDecimal;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.powermock.api.mockito.PowerMockito.doNothing;
+import static org.powermock.api.support.membermodification.MemberMatcher.method;
+import static org.powermock.api.support.membermodification.MemberModifier.suppress;
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({TimeUnit.class})
+@SuppressStaticInitializationFor("com.xxx.xxx.utils.SalaryCalculator")
+@PrepareForTest(TimeUnit.class)
 public class PersonServiceTest {
     @InjectMocks
     private PersonService personService;
@@ -39,8 +41,7 @@ public class PersonServiceTest {
     @Test
     public void should_get_person_named_merson_james_when_name_is_james() {
         // given
-        PowerMockito.mockStatic(TimeUnit.class);
-        doNothing().when(TimeUnit.class);
+        suppress(method(TimeUnit.class, "sleep"));
 
         // when
         PersonRequest request = new PersonRequest("James");
